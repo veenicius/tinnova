@@ -1,38 +1,54 @@
 import { Component } from "react";
-import useFetch from "use-http";
 import Modal from "../Modal/Modal";
+import axios from "axios";
 
-function FetchUserData() {
-  const endpoint = "https://private-9d65b3-tinnova.apiary-mock.com/users";
+var storageData = {};
 
-  const options = {};
-  const { loading, error, data = [] } = useFetch(endpoint, options, []);
-  // console.log(data);
-  localStorage.setItem("users", JSON.stringify(data));
+function refreshPage() {
+  window.location.reload(false);
+}
+
+async function Penis() {
+  axios
+    .get("https://private-9d65b3-tinnova.apiary-mock.com/users")
+    .then((response) => {
+      console.log("axios", response.data);
+      storageData = response.data;
+      localStorage.setItem("users", JSON.stringify(response.data));
+      refreshPage()
+    });
+}
+
+async function checkData() {
+  if (localStorage.getItem("users") === null) {
+    await Penis();
+  } else {
+    console.log("data2:", storageData);
+    storageData = JSON.parse(localStorage.getItem("users"));
+  }
 }
 
 const GetUserData = () => {
-  // FetchUserData()
-  const storageData = JSON.parse(localStorage.getItem("users"));
-  storageData.map((user) => console.log(user));
+  checkData();
   return (
     <>
-      {storageData.map((user) => (
-        <tr key={user.cpf}>
-          <td key="1" className="border-t-2 border-gray-200 px-4 py-3">
-            {user.name}
-          </td>
-          <td key="2" className="border-t-2 border-gray-200 px-4 py-3">
-            {user.cpf}
-          </td>
-          <td key="3" className="border-t-2 border-gray-200 px-4 py-3">
-            {user.phone}
-          </td>
-          <td key="4" className="border-t-2 border-gray-200 px-4 py-3">
-            {user.email}
-          </td>
-        </tr>
-      ))}
+      {storageData &&
+        storageData.map((user) => (
+          <tr key={user.cpf}>
+            <td key="1" className="border-t-2 border-gray-200 px-4 py-3">
+              {user.name}
+            </td>
+            <td key="2" className="border-t-2 border-gray-200 px-4 py-3">
+              {user.cpf}
+            </td>
+            <td key="3" className="border-t-2 border-gray-200 px-4 py-3">
+              {user.phone}
+            </td>
+            <td key="4" className="border-t-2 border-gray-200 px-4 py-3">
+              {user.email}
+            </td>
+          </tr>
+        ))}
     </>
   );
 };
