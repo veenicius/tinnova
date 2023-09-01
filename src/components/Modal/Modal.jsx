@@ -3,7 +3,6 @@ import { useState } from "react";
 import CpfInput from "../input/CPFInput";
 import PhoneInput from "../input/PhoneInput";
 
-
 const Modal = ({ handleClose, show }) => {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
@@ -25,9 +24,9 @@ const Modal = ({ handleClose, show }) => {
       email: email,
     };
 
-    //add item data to array contactlist
     todayData.push(user);
-
+    console.log("phone", phone);
+    console.log("user", user);
     localStorage.setItem("users", JSON.stringify(todayData));
   };
 
