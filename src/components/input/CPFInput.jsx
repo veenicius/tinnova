@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputMask from "react-input-mask";
 import { validate } from "cpf-checker";
 
-var storageData = JSON.parse(localStorage.getItem("users")).map(
+var storageData = [] || JSON.parse(localStorage.getItem("users")).map(
   (user) => user.cpf
 );
 
