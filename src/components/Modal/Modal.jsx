@@ -1,9 +1,12 @@
 import "./Modal.css";
 import { useState } from "react";
+import CpfInput from "../input/CPFInput";
+import PhoneInput from "../input/PhoneInput";
+
 
 const Modal = ({ handleClose, show }) => {
   const [name, setName] = useState("");
-  const [cpf, setCPF] = useState("");
+  const [cpf, setCpf] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
@@ -38,7 +41,10 @@ const Modal = ({ handleClose, show }) => {
               Novo Usuário
             </h2>
 
-            <form className="mx-auto max-w-lg rounded-lg border">
+            <form
+              className="mx-auto max-w-lg rounded-lg border group"
+              noValidate
+            >
               <div className="flex flex-col gap-4 p-4 md:p-8">
                 <div>
                   <label
@@ -49,6 +55,7 @@ const Modal = ({ handleClose, show }) => {
                   </label>
                   <input
                     name="name"
+                    required
                     onChange={(e) => setName(e.target.value)}
                     className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
                   />
@@ -60,11 +67,7 @@ const Modal = ({ handleClose, show }) => {
                   >
                     CPF
                   </label>
-                  <input
-                    name="cpf"
-                    onChange={(e) => setCPF(e.target.value)}
-                    className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
-                  />
+                  <CpfInput value={cpf} onChange={setCpf} />
                 </div>
                 <div>
                   <label
@@ -73,11 +76,15 @@ const Modal = ({ handleClose, show }) => {
                   >
                     Phone
                   </label>
-                  <input
+                  <PhoneInput value={phone} onChange={setPhone} />
+                  {/* <input
+                    id="phone"
+                    type="number"
                     name="phone"
+                    required
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
-                  />
+                  /> */}
                 </div>
                 <div>
                   <label
@@ -87,15 +94,22 @@ const Modal = ({ handleClose, show }) => {
                     Email
                   </label>
                   <input
+                    type="email"
+                    id="email"
                     name="email"
+                    required
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring"
+                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                    className="w-full rounded border bg-gray-50 px-3 py-2 text-gray-800 outline-none ring-indigo-300 transition duration-100 focus:ring invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                   />
+                  <span className="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">
+                    Please enter a valid email address
+                  </span>
                 </div>
 
                 <button
                   onClick={postData}
-                  className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base"
+                  className="block rounded-lg bg-gray-800 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-gray-300 transition duration-100 hover:bg-gray-700 focus-visible:ring active:bg-gray-600 md:text-base group-invalid:pointer-events-none group-invalid:opacity-30"
                 >
                   Confirm
                 </button>

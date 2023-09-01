@@ -15,7 +15,7 @@ async function Penis() {
       console.log("axios", response.data);
       storageData = response.data;
       localStorage.setItem("users", JSON.stringify(response.data));
-      refreshPage()
+      refreshPage();
     });
 }
 
@@ -28,6 +28,12 @@ async function checkData() {
   }
 }
 
+function deleteRow(cpf) {
+  const newData = storageData.filter((user) => user.cpf != cpf);
+  localStorage.setItem("users", JSON.stringify(newData));
+  refreshPage();
+}
+
 const GetUserData = () => {
   checkData();
   return (
@@ -38,7 +44,11 @@ const GetUserData = () => {
             <td key="1" className="border-t-2 border-gray-200 px-4 py-3">
               {user.name}
             </td>
-            <td key="2" className="border-t-2 border-gray-200 px-4 py-3">
+            <td
+              key="2"
+              id="cpf"
+              className="border-t-2 border-gray-200 px-4 py-3"
+            >
               {user.cpf}
             </td>
             <td key="3" className="border-t-2 border-gray-200 px-4 py-3">
@@ -46,6 +56,14 @@ const GetUserData = () => {
             </td>
             <td key="4" className="border-t-2 border-gray-200 px-4 py-3">
               {user.email}
+            </td>
+            <td key="5" className="border-t-2 border-gray-200 px-4 py-3">
+              <button
+                onClick={() => deleteRow(user.cpf)}
+                className="inline-flex text-red-500 bg-white-500 border border-red-500 py-1 px-4 focus:outline-none hover:bg-red-500 hover:text-white rounded"
+              >
+                Excluir
+              </button>
             </td>
           </tr>
         ))}
